@@ -1,6 +1,6 @@
 from typing import List
 
-# ID успешной попытки: 12345678
+# ID успешной попытки: 160965005
 
 def calculate_min_platforms(weights: List[int], limit: int) -> int:
     sorted_weights = sorted(weights)
