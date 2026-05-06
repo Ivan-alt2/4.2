@@ -1,37 +1,37 @@
-def decode_string(s: str) -> str:
+def decode_string(encoded_str: str) -> str:
+   
+# ID успешной попытки: 161571272
+    
+    BASE_NUMERAL_SYSTEM = 10
 
-# ID успешной попытки: 161571272	
+    result_stack = []
+    count_stack = []
+    current_result = []
+    current_num = 0
 
-    def decode_recursive(index: int) -> tuple[str, int]:
-        result = []
-        current_num = 0
+    for char in encoded_str:
+        if char.isdigit():
+            current_num = current_num * BASE_NUMERAL_SYSTEM + int(char)
+        elif char == '[':
+            count_stack.append(current_num)
+            result_stack.append(''.join(current_result))
+            current_num = 0
+            current_result = []
+        elif char == ']':
+            count = count_stack.pop()
+            prev_result = result_stack.pop()
+            current_result = [prev_result + ''.join(current_result) * count]
+        else:
+            current_result.append(char)
 
-        while index < len(s):
-            char = s[index]
+    return ''.join(current_result)
 
-            if char.isdigit():
-                current_num = current_num * 10 + int(char)
-                index += 1
 
-            elif char == '[':
-                substring, next_index = decode_recursive(index + 1)
-                result.append(substring * current_num)
-                current_num = 0
-                index = next_index
-
-            elif char == ']':
-                return ''.join(result), index + 1
-
-            else:
-                result.append(char)
-                index += 1
-
-        return ''.join(result), index
-
-    decoded_string, _ = decode_recursive(0)
-    return decoded_string
+def main() -> None:
+    compressed_input = input().strip()
+    decoded_output = decode_string(compressed_input)
+    print(decoded_output)
 
 
 if __name__ == "__main__":
-    compressed_input = input().strip()
-    print(decode_string(compressed_input))
+    main()
