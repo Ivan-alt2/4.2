@@ -1,21 +1,20 @@
-def decode_string(encoded_str: str) -> str:
-   
-# ID успешной попытки: 161571272
-    
-    BASE_NUMERAL_SYSTEM = 10
+# ID успешной попытки: 161671605
 
+BASE_NUMERAL_SYSTEM = 10
+
+def decode_string(encoded_str: str) -> str:
     result_stack = []
     count_stack = []
     current_result = []
-    current_num = 0
+    current_number = 0
 
     for char in encoded_str:
         if char.isdigit():
-            current_num = current_num * BASE_NUMERAL_SYSTEM + int(char)
+            current_number = current_number * BASE_NUMERAL_SYSTEM + int(char)
         elif char == '[':
-            count_stack.append(current_num)
+            count_stack.append(current_number)
             result_stack.append(''.join(current_result))
-            current_num = 0
+            current_number = 0
             current_result = []
         elif char == ']':
             count = count_stack.pop()
@@ -26,12 +25,10 @@ def decode_string(encoded_str: str) -> str:
 
     return ''.join(current_result)
 
-
 def main() -> None:
     compressed_input = input().strip()
     decoded_output = decode_string(compressed_input)
     print(decoded_output)
-
 
 if __name__ == "__main__":
     main()
