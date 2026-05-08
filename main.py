@@ -3,8 +3,7 @@
 BASE_NUMERAL_SYSTEM = 10
 
 def decode_string(encoded_str: str) -> str:
-    result_stack = []
-    count_stack = []
+    stack = []
     current_result = []
     current_number = 0
 
@@ -12,14 +11,12 @@ def decode_string(encoded_str: str) -> str:
         if char.isdigit():
             current_number = current_number * BASE_NUMERAL_SYSTEM + int(char)
         elif char == '[':
-            count_stack.append(current_number)
-            result_stack.append(''.join(current_result))
-            current_number = 0
+            stack.append((''.join(current_result), current_number))
             current_result = []
+            current_number = 0
         elif char == ']':
-            count = count_stack.pop()
-            prev_result = result_stack.pop()
-            current_result = [prev_result + ''.join(current_result) * count]
+            previous_result, repeat_count = stack.pop()
+            current_result = [previous_result + ''.join(current_result) * repeat_count]
         else:
             current_result.append(char)
 
